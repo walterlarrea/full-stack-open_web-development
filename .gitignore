@@ -3,11 +3,11 @@
 # practices
 /practices
 
-# every dependency
-node_modules
-
 # dependencies
-/node_modules
+node_modules
+public
+package.json
+
 /.pnp
 .pnp.js
 
