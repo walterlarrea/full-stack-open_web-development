@@ -28,7 +28,7 @@ const CountryInfo = ({ country }) => {
       .then(response => {
         setWeather(response.data)
       })
-  }, [])
+  }, [weatherApiUrl])
 
   return (
     <>
