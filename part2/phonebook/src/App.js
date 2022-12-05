@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import personService from './services/persons'
+import Notification from './components/Notification'
 
 const Filter = (props) => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [messageStatusAndText, setMessageStatusAndText] = useState(["", null]) // ["OK" or "ERROR", "message"]
 
   useEffect(() => {
     personService
@@ -39,11 +41,30 @@ const App = () => {
   const updatePhoneNumber = () => {
     if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
       const person = persons.find(p => p.name.toLowerCase() === newName.toLowerCase())
-      const newObject = { ...person, number: newNumber }
+      const newPerson = { ...person, number: newNumber }
 
       personService
-        .update(newObject.id, newObject)
-        .then(returnedPerson => setPersons(persons.map(p => p.name !== returnedPerson.name ? p : returnedPerson)))
+        .update(newPerson.id, newPerson)
+        .then(returnedPerson => {
+          setPersons(persons.map(p => p.name !== returnedPerson.name ? p : returnedPerson))
+
+          setMessageStatusAndText([
+            "OK",
+            `Updated phone number for ${newPerson.name}`])
+          setTimeout(() => {
+            setMessageStatusAndText(["", null])
+          }, 5000)
+        })
+        .catch(response => {
+          setMessageStatusAndText([
+            "ERROR",
+            `Information of ${newPerson.name} has already been removed from server`])
+          setTimeout(() => {
+            setMessageStatusAndText(["", null])
+          }, 5000)
+          setPersons(persons.filter(p => p.id !== newPerson.id))
+        })
+
     }
   }
 
@@ -62,6 +83,21 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
+
+          setMessageStatusAndText([
+            "OK",
+            `Added ${newPerson.name}`])
+          setTimeout(() => {
+            setMessageStatusAndText(["", null])
+          }, 5000)
+        })
+        .catch(response => {
+          setMessageStatusAndText([
+            "ERROR",
+            `Something went wrong`])
+          setTimeout(() => {
+            setMessageStatusAndText(["", null])
+          }, 5000)
         })
     } else {
       updatePhoneNumber()
@@ -93,7 +129,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-
+      <Notification status={messageStatusAndText[0]} message={messageStatusAndText[1]} />
       <Filter onChange={handleFilterChange} value={filter} />
 
       <h3>Add a new</h3>
