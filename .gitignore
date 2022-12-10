@@ -7,10 +7,9 @@
 public
 package-lock.json
 .env
-
-# dependencies
 node_modules
 
+# dependencies
 /.pnp
 .pnp.js
 
