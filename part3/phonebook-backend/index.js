@@ -75,10 +75,13 @@ app.delete('/api/persons/:id', (req, res) => {
 })
 
 app.get('/info', (req, res) => {
-  return res.send(`
-  <p>Phonebook has info for ${persons.length} people</p>  
-  <p>${new Date()}</p>
-  `)
+  Person.find({})
+    .then(people => {
+      res.send(`
+        <p>Phonebook has info for ${people.length} people</p>  
+        <p>${new Date()}</p>
+        `)
+    })
 })
 
 const PORT = process.env.PORT || 3001
