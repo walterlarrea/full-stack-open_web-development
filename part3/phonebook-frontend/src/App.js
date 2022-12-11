@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import personService from './services/persons'
+import personService from './services/people'
 import Notification from './components/Notification'
 
 const Filter = (props) => {
