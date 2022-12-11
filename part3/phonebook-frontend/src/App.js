@@ -23,7 +23,13 @@ const PersonsForm = (props) => {
   )
 }
 
-const Person = ({ person, handleDeletion }) => <p>{person.name} {person.number} <button onClick={handleDeletion}>delete</button></p>
+const Person = ({ person, handleDeletion }) => {
+  return (
+    <p>{person.name} {person.number}
+      <button onClick={handleDeletion}>delete</button>
+    </p>
+  )
+}
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -38,6 +44,13 @@ const App = () => {
       .then(initialPersons => setPersons(initialPersons))
   }, [])
 
+  const showNotification = ([type, msg]) => {
+    setMessageStatusAndText([type, msg])
+    setTimeout(() => {
+      setMessageStatusAndText(["", null])
+    }, 5000)
+  }
+
   const updatePhoneNumber = () => {
     if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
       const person = persons.find(p => p.name.toLowerCase() === newName.toLowerCase())
@@ -48,20 +61,10 @@ const App = () => {
         .then(returnedPerson => {
           setPersons(persons.map(p => p.name !== returnedPerson.name ? p : returnedPerson))
 
-          setMessageStatusAndText([
-            "OK",
-            `Updated phone number for ${newPerson.name}`])
-          setTimeout(() => {
-            setMessageStatusAndText(["", null])
-          }, 5000)
+          showNotification(["OK", `Updated phone number for ${newPerson.name}`])
         })
-        .catch(response => {
-          setMessageStatusAndText([
-            "ERROR",
-            `Information of ${newPerson.name} has already been removed from server`])
-          setTimeout(() => {
-            setMessageStatusAndText(["", null])
-          }, 5000)
+        .catch(error => {
+          showNotification(["ERROR", error.response.data.error])
           setPersons(persons.filter(p => p.id !== newPerson.id))
         })
 
@@ -84,20 +87,10 @@ const App = () => {
           setNewName('')
           setNewNumber('')
 
-          setMessageStatusAndText([
-            "OK",
-            `Added ${newPerson.name}`])
-          setTimeout(() => {
-            setMessageStatusAndText(["", null])
-          }, 5000)
+          showNotification(["OK", `Added ${newPerson.name}`])
         })
-        .catch(response => {
-          setMessageStatusAndText([
-            "ERROR",
-            `Something went wrong`])
-          setTimeout(() => {
-            setMessageStatusAndText(["", null])
-          }, 5000)
+        .catch(error => {
+          showNotification(["ERROR", error.response.data.error])
         })
     } else {
       updatePhoneNumber()
