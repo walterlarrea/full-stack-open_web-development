@@ -1,31 +1,31 @@
 require('dotenv').config()
-const express = require("express")
+const express = require('express')
 const app = express()
-const cors = require("cors")
+const cors = require('cors')
 const Person = require('./models/person')
 
-let persons = [
-  {
-    "id": 1,
-    "name": "Arto Hellas",
-    "number": "040-123456"
-  },
-  {
-    "id": 2,
-    "name": "Ada Lovelace",
-    "number": "39-44-5323523"
-  },
-  {
-    "id": 3,
-    "name": "Dan Abramov",
-    "number": "12-43-234345"
-  },
-  {
-    "id": 4,
-    "name": "Mary Poppendieck",
-    "number": "39-23-6423122"
-  }
-]
+// let persons = [
+//   {
+//     'id': 1,
+//     'name': 'Arto Hellas',
+//     'number': '040-123456'
+//   },
+//   {
+//     'id': 2,
+//     'name': 'Ada Lovelace',
+//     'number': '39-44-5323523'
+//   },
+//   {
+//     'id': 3,
+//     'name': 'Dan Abramov',
+//     'number': '12-43-234345'
+//   },
+//   {
+//     'id': 4,
+//     'name': 'Mary Poppendieck',
+//     'number': '39-23-6423122'
+//   }
+// ]
 
 app.use(cors())
 app.use(express.json())
@@ -39,7 +39,7 @@ app.get('/api/persons', (req, res) => {
     })
 })
 
-app.get('/api/persons/:id', (req, res) => {
+app.get('/api/persons/:id', (req, res, next) => {
   Person.findById(req.params.id)
     .then(person => {
       if (person) {
@@ -88,12 +88,12 @@ app.put('/api/persons/:id', (req, res, next) => {
 app.delete('/api/persons/:id', (req, res, next) => {
   Person.findByIdAndRemove(req.params.id)
     .then(result => {
-      res.status(204).end()
+      res.status(204).send(result)
     })
     .catch(error => next(error))
 })
 
-app.get('/info', (req, res) => {
+app.get('/info', (req, res, next) => {
   Person.find({})
     .then(people => {
       res.send(`
@@ -101,7 +101,7 @@ app.get('/info', (req, res) => {
         <p>${new Date()}</p>
         `)
     })
-    .catch(error => netx(error))
+    .catch(error => next(error))
 })
 
 const errorHandler = (error, req, res, next) => {
