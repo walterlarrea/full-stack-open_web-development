@@ -67,10 +67,10 @@ app.post('/api/persons', (req, res, next) => {
     .catch(error => next(error))
 })
 
+// This route should be a PATCH now??
 app.put('/api/persons/:id', (req, res, next) => {
   const body = req.body
   const person = {
-    name: body.name,
     number: body.number,
   }
 

@@ -74,27 +74,50 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
 
-    if (persons.every(p => p.name.toLowerCase() !== newName.toLowerCase())) {
-      const newPerson = {
-        name: newName,
-        number: newNumber,
-      }
-
-      personService
-        .create(newPerson)
-        .then(returnedPerson => {
-          setPersons(persons.concat(returnedPerson))
-          setNewName('')
-          setNewNumber('')
-
-          showNotification(["OK", `Added ${newPerson.name}`])
-        })
-        .catch(error => {
-          showNotification(["ERROR", error.response.data.error])
-        })
-    } else {
-      updatePhoneNumber()
+    const newPerson = {
+      name: newName,
+      number: newNumber,
     }
+
+    personService
+      .create(newPerson)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        setNewName('')
+        setNewNumber('')
+
+        showNotification(["OK", `Added ${newPerson.name}`])
+      })
+      .catch(error => {
+        showNotification(["ERROR", error.response.data.error])
+        // Check for error type and offer Updating the document in case it already exists
+        if (error.response.data.error.toLowerCase().includes('name:')
+          || error.response.data.error.toLowerCase().includes('already exists')) {
+          updatePhoneNumber()
+        }
+      })
+
+    // if (persons.every(p => p.name.toLowerCase() !== newName.toLowerCase())) {
+    //   const newPerson = {
+    //     name: newName,
+    //     number: newNumber,
+    //   }
+
+    //   personService
+    //     .create(newPerson)
+    //     .then(returnedPerson => {
+    //       setPersons(persons.concat(returnedPerson))
+    //       setNewName('')
+    //       setNewNumber('')
+
+    //       showNotification(["OK", `Added ${newPerson.name}`])
+    //     })
+    //     .catch(error => {
+    //       showNotification(["ERROR", error.response.data.error])
+    //     })
+    // } else {
+    //   updatePhoneNumber()
+    // }
   }
 
   const handleDeletionOf = (id) => {
