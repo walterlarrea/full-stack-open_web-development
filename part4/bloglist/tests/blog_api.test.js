@@ -120,12 +120,6 @@ describe('modifying a blog', () => {
 
     const blogsAtEnd = await helper.blogsInDb()
 
-    // expect(blogsAtEnd).toHaveLength(
-    //   helper.initialBlogs.length - 1
-    // )
-
-    // const titles = blogsAtEnd.map(r => r.title)
-
     expect(blogsAtEnd[0].likes).not.toEqual(blogsAtStart[0].likes)
   })
 })
