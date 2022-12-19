@@ -15,7 +15,7 @@ beforeEach(async () => {
   await Promise.all(promiseArray)
 })
 
-describe('blogs api - list blogs', () => {
+describe('when there is initialy some blogs saved', () => {
   test('blogs are returned as json', async () => {
     await api
       .get('/api/blogs')
@@ -35,8 +35,8 @@ describe('blogs api - list blogs', () => {
   })
 })
 
-describe('blogs api - save blogs', () => {
-  test('a valid blog can be added', async () => {
+describe('addition of a new blog', () => {
+  test('succeeds with valid data', async () => {
     const newBlog = {
       title: 'We can test POST methods using Jest',
       author: 'Walter',
@@ -59,7 +59,7 @@ describe('blogs api - save blogs', () => {
     )
   })
 
-  test('a blog without "likes" property will be saved with 0 likes', async () => {
+  test('succeeds without "likes" property', async () => {
     const newBlog = {
       title: 'If we create a blog without "likes" it will be saved with 0 likes',
       author: 'Walter',
@@ -78,7 +78,7 @@ describe('blogs api - save blogs', () => {
     expect(blogWithoutLikes.likes).toBeDefined()
   })
 
-  test('creating blogs with "title" or "url" missing will get "400 Bad Request" response', async () => {
+  test('fails with status code of 400 if data is invalid', async () => {
     const newBlogs = [{
       title: 'This blog does not have a url',
       author: 'Walter',
@@ -105,6 +105,49 @@ describe('blogs api - save blogs', () => {
     const blogsAtEnd = await helper.blogsInDb()
 
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+  })
+})
+
+describe('modifying a blog', () => {
+  test('succeeds with status code of 200 if id is valid', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToUpdate = blogsAtStart[0]
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send({ ...blogToUpdate, likes: blogToUpdate.likes + 1 })
+      .expect(200)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    // expect(blogsAtEnd).toHaveLength(
+    //   helper.initialBlogs.length - 1
+    // )
+
+    // const titles = blogsAtEnd.map(r => r.title)
+
+    expect(blogsAtEnd[0].likes).not.toEqual(blogsAtStart[0].likes)
+  })
+})
+
+describe('deletion of a blog', () => {
+  test('succeeds with status code of 204 if id is valid', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[0]
+
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    expect(blogsAtEnd).toHaveLength(
+      helper.initialBlogs.length - 1
+    )
+
+    const titles = blogsAtEnd.map(r => r.ttile)
+
+    expect(titles).not.toContain(blogToDelete.title)
   })
 })
 
