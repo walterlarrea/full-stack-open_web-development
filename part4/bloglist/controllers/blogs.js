@@ -1,23 +1,37 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
+const User = require('../models/user')
+const jwt = require('jsonwebtoken')
 
 blogsRouter.get('/', async (req, res) => {
-  const blogs = await Blog.find({})
+  const blogs = await Blog
+    .find({})
+    .populate('user', { username: 1, name: 1 })
+
   res.json(blogs)
 })
 
 blogsRouter.post('/', async (req, res) => {
   const body = req.body
+  if (!req.user?.id) {
+    return res.status(401).json({ error: 'token missing or invalid' })
+  }
+  // didn't want to make a DB query inside the middleware
+  const user = await User.findById(req.user.id)
 
   const blog = new Blog({
     title: body.title,
     author: body.author,
     url: body.url,
+    user: user._id,
     likes: body.likes || 0
   })
 
-  const savedBlogs = await blog.save()
-  res.status(201).json(savedBlogs)
+  const savedBlog = await blog.save()
+  user.blogs = user.blogs.concat(savedBlog.id)
+  user.save()
+
+  res.status(201).json(savedBlog)
 })
 
 blogsRouter.put('/:id', async (req, res) => {
@@ -33,6 +47,22 @@ blogsRouter.put('/:id', async (req, res) => {
 })
 
 blogsRouter.delete('/:id', async (req, res) => {
+  const decodedToken = jwt.verify(req.token, process.env.SECRET)
+  if (!decodedToken.id) {
+    return res.status(401).json({ error: 'token missing or invalid' })
+  }
+  const user = req.user
+
+  const blogToDelete = await Blog
+    .findById(req.params.id)
+  //.populate('user', { username: 1, user: 1 })
+  if (!blogToDelete) {
+    return res.status(400).json({ error: 'the requested blog has already been removed' })
+  }
+  if (blogToDelete.user.toString() !== user.id.toString()) {
+    return res.status(403).json({ error: 'only the user who created a blog is able to delete it' })
+  }
+
   await Blog.findByIdAndRemove(req.params.id)
   res.status(204).end()
 })
