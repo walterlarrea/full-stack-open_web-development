@@ -31,7 +31,7 @@ const Blog = ({ blog, blogLike, blogRemove, currentUser }) => {
 
   return (
     showDetails ?
-      <div style={blogStyle}>
+      <div className='blog' style={blogStyle}>
         <p style={paragraphStyle}>
           {blog.title} {blog.author}
           <button onClick={toggleDetailsView} >hide</button>
@@ -50,7 +50,7 @@ const Blog = ({ blog, blogLike, blogRemove, currentUser }) => {
         }
       </div>
       :
-      <div style={blogStyle}>
+      <div className='blog' style={blogStyle}>
         <p style={paragraphStyle}>
           {blog.title} {blog.author}
           <button onClick={toggleDetailsView} >view</button>

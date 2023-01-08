@@ -15,9 +15,11 @@ const App = () => {
   const blogFormRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
+    blogService.getAll().then(blogs => {
+      let sortedBlogs = [...blogs]
+      sortedBlogs.sort((a, b) => b.likes - a.likes)
+      setBlogs(sortedBlogs)
+    })
   }, [])
 
   useEffect(() => {
@@ -102,26 +104,26 @@ const App = () => {
   )
 
   return (
-    user === null ?
-      <div>
-        <Notification status={messageStatusAndText[0]} message={messageStatusAndText[1]} />
+    <>
+      <Notification status={messageStatusAndText[0]} message={messageStatusAndText[1]} />
 
-        <Togglable buttonLabel='login'>
-          <LoginForm
-            validateLogin={handleLogin}
-          />
-        </Togglable>
-      </div> :
-      <div>
-        <h2>blogs</h2>
-        <Notification status={messageStatusAndText[0]} message={messageStatusAndText[1]} />
-        <p style={{ fontSize: '1.2em' }}>{user.name} logged in <button onClick={handleLogout}>logout</button></p>
-        <Togglable buttonLabel='create new blog' ref={blogFormRef}>
-          <NewBlogForm createBlog={addBlog} />
-        </Togglable>
-        <br />
-        {blogList()}
-      </div>
+      {user === null ?
+        <div>
+          <Togglable buttonLabel='login'>
+            <LoginForm validateLogin={handleLogin} />
+          </Togglable>
+        </div> :
+        <div>
+          <h2>blogs</h2>
+          <p style={{ fontSize: '1.2em' }}>{user.name} logged in <button onClick={handleLogout}>logout</button></p>
+          <Togglable buttonLabel='create new blog' ref={blogFormRef}>
+            <NewBlogForm createBlog={addBlog} />
+          </Togglable>
+          <br />
+          {blogList()}
+        </div>
+      }
+    </>
   )
 }
 
