@@ -18,17 +18,16 @@ describe('Blogs', () => {
   }
   const blogLike = jest.fn()
   const blogRemove = jest.fn()
-  let container
 
   beforeEach(() => {
-    container = render(
+    render(
       <Blog
         blog={blog}
         currentUser={currentUser}
         blogLike={blogLike}
         blogRemove={blogRemove}
       />
-    ).container
+    )
   })
 
   test('renders the blog title and author, but not its URL and likes by default', async () => {

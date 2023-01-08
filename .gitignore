@@ -8,6 +8,7 @@ public
 package-lock.json
 .env
 node_modules
+videos
 
 # dependencies
 /.pnp
