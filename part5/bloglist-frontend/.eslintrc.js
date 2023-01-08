@@ -17,7 +17,7 @@ module.exports = {
     'sourceType': 'module'
   },
   'plugins': [
-    'react', 'jest', 'cypres'
+    'react', 'jest', 'cypress'
   ],
   'rules': {
     'indent': [

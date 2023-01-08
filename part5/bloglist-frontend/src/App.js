@@ -104,26 +104,21 @@ const App = () => {
   )
 
   return (
-    <>
-      <Notification status={messageStatusAndText[0]} message={messageStatusAndText[1]} />
-
-      {user === null ?
-        <div>
-          <Togglable buttonLabel='login'>
-            <LoginForm validateLogin={handleLogin} />
-          </Togglable>
-        </div> :
-        <div>
-          <h2>blogs</h2>
-          <p style={{ fontSize: '1.2em' }}>{user.name} logged in <button onClick={handleLogout}>logout</button></p>
-          <Togglable buttonLabel='create new blog' ref={blogFormRef}>
-            <NewBlogForm createBlog={addBlog} />
-          </Togglable>
-          <br />
-          {blogList()}
-        </div>
-      }
-    </>
+    user === null ?
+      <>
+        <Notification status={messageStatusAndText[0]} message={messageStatusAndText[1]} />
+        <LoginForm validateLogin={handleLogin} />
+      </> :
+      <div>
+        <h2>blogs</h2>
+        <Notification status={messageStatusAndText[0]} message={messageStatusAndText[1]} />
+        <p style={{ fontSize: '1.2em' }}>{user.name} logged in <button onClick={handleLogout}>logout</button></p>
+        <Togglable buttonLabel='create new blog' ref={blogFormRef}>
+          <NewBlogForm createBlog={addBlog} />
+        </Togglable>
+        <br />
+        {blogList()}
+      </div>
   )
 }
 

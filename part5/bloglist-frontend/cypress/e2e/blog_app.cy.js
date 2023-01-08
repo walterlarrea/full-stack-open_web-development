@@ -11,7 +11,7 @@ describe('Blog app', function () {
   })
 
   it('Login form is shown', function () {
-    cy.contains('login').click()
+    //cy.contains('login').click()
     cy.contains('Log in to application')
   })
 
