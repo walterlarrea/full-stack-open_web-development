@@ -3,7 +3,7 @@
     {
       "content": "If it hurts, do it more often",
       "id": "47145",
-      "votes": 0
+      "votes": 1
     },
     {
       "content": "Adding manpower to a late software project makes it later!",
@@ -31,9 +31,14 @@
       "votes": 0
     },
     {
-      "content": "Hola creando con json server",
+      "content": "A new anecdote to try save persistant votes",
+      "votes": 3,
+      "id": "Jt7AwxN"
+    },
+    {
+      "content": "Using thunks Notifications",
       "votes": 0,
-      "id": "6mXGvMc"
+      "id": "zj06cbF"
     }
   ]
 }
