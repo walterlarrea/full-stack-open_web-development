@@ -1,12 +1,10 @@
-import { useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 import { setSearchBox } from '../reducers/filterReducer'
 
-const SearchForm = (props) => {
-  const dispatch = useDispatch()
-
+const Filter = (props) => {
   const handleSearchInput = (event) => {
     const searchText = event.target.value
-    dispatch(setSearchBox(searchText))
+    props.setSearchBox(searchText)
   }
   const style = {
     marginBottom: 10
@@ -25,4 +23,7 @@ const SearchForm = (props) => {
   )
 }
 
-export default SearchForm
+export default connect(
+  null,
+  { setSearchBox }
+)(Filter)
