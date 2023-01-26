@@ -4,6 +4,7 @@
 /practices
 
 #custom
+public
 package-lock.json
 .env
 node_modules
