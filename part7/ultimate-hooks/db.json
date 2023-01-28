@@ -1,0 +1,46 @@
+{
+  "notes": [
+    {
+      "content": "custom-hooks are great",
+      "id": 1
+    },
+    {
+      "content": "the best featrure ever <3",
+      "id": 2
+    },
+    {
+      "content": "The first useResource note",
+      "id": 3
+    },
+    {
+      "content": "Second note",
+      "id": 4
+    },
+    {
+      "content": "Third note",
+      "id": 5
+    }
+  ],
+  "persons": [
+    {
+      "name": "mluukkai",
+      "number": "040-5483923",
+      "id": 1
+    },
+    {
+      "name": "kaltsoon",
+      "number": "045-2323456",
+      "id": 2
+    },
+    {
+      "name": "Camila",
+      "number": "123123",
+      "id": 3
+    },
+    {
+      "name": "Walter",
+      "number": "983450798",
+      "id": 4
+    }
+  ]
+}

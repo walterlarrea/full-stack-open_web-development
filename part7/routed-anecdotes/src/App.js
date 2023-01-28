@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useField } from './hooks'
 
 import {
   Routes,
@@ -69,19 +70,33 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+  // const [content, setContent] = useState('')
+  // const [author, setAuthor] = useState('')
+  // const [info, setInfo] = useState('')
 
+  // const content = useField('text')
+  // const author = useField('text')
+  // const info = useField('text')
+
+  const { reset: contentReset, ...contentAsElementProperty } = useField('text')
+  const { reset: authorReset, ...authorAsElementProperty } = useField('text')
+  const { reset: infoReset, ...infoAsElementProperty } = useField('text')
 
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
+      content: contentAsElementProperty.value,
+      author: authorAsElementProperty,
+      info: infoAsElementProperty,
       votes: 0
     })
+  }
+
+  const resetFields = (e) => {
+    e.preventDefault()
+    contentReset()
+    authorReset()
+    infoReset()
   }
 
   return (
@@ -90,17 +105,17 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input name='content' {...contentAsElementProperty} />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input name='author' {...authorAsElementProperty} />
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e) => setInfo(e.target.value)} />
+          <input name='info' {...infoAsElementProperty} />
         </div>
-        <button>create</button>
+        <button type='submit'>create</button><button onClick={(event) => resetFields(event)}>reset</button>
       </form>
     </div>
   )
