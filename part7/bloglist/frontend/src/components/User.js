@@ -1,3 +1,11 @@
+import {
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon
+} from '@mui/material'
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord'
+
 const User = ({ user }) => {
   if (!user) {
     return null
@@ -9,13 +17,16 @@ const User = ({ user }) => {
 
       <p>added blogs</p>
 
-      <ul>
+      <List>
         {user.blogs.map(blog =>
-          <li key={blog.id} >
-            {blog.title}
-          </li>
+          <ListItem key={blog.id}>
+            <ListItemIcon>
+              <FiberManualRecordIcon />
+            </ListItemIcon>
+            <ListItemText>{blog.title}</ListItemText>
+          </ListItem>
         )}
-      </ul>
+      </List>
     </>
   )
 }

@@ -3,7 +3,7 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import LoginForm from './components/LoginForm'
 import NewBlogForm from './components/NewBlogForm'
-import Menu from './components/Menu'
+import NavBar from './components/NavBar'
 import BlogList from './components/BlogList'
 import Blog from './components/Blog'
 import UsersList from './components/UsersList'
@@ -13,11 +13,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs, createBlog } from './reducers/blogReducer'
 import { initializeUserSession, initializeUserList } from './reducers/userReducer'
 
+import { Container } from '@mui/material'
 import {
   Routes,
   Route,
-  // Link,
-  // useNavigate,
   useMatch,
 } from 'react-router-dom'
 
@@ -25,6 +24,10 @@ const App = () => {
   const currentUser = useSelector(({ user }) => user.currentUser)
   const usersList = useSelector(({ user }) => user.usersList)
   const blogList = useSelector(({ blogs }) => blogs)
+
+  const fontStyle = {
+    fontFamily: 'Roboto'
+  }
 
   const dispatch = useDispatch()
 
@@ -52,35 +55,39 @@ const App = () => {
     : null
 
   return (
-    !currentUser.name ?
-      <>
-        <Notification />
-        <LoginForm />
-      </> :
-      <div>
-        <Menu />
+    <Container style={fontStyle}>
+      {!currentUser.name ?
+        <>
+          <Notification />
+          <LoginForm />
+        </> :
+        <div>
+          <NavBar />
+          <div style={{ marginTop: 100 }}>
+            <Notification />
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <h2>blog app</h2>
+          </div>
 
-        <h2>blog app</h2>
-        <Notification />
+          <Routes>
+            <Route path="/blogs/:id" element={<Blog blog={blog} />} />
+            <Route path="/" element={
+              <div>
+                <Togglable buttonLabel='create new' ref={blogFormRef}>
+                  <NewBlogForm createBlog={addBlog} />
+                </Togglable>
+                <BlogList />
+              </div>
+            } />
+            <Route path="/users/:id" element={<User user={user} />} />
+            <Route path="/users" element={<UsersList />} />
+          </Routes>
 
-
-
-        <Routes>
-          <Route path="/blogs/:id" element={<Blog blog={blog} />} />
-          <Route path="/" element={
-            <div>
-              <Togglable buttonLabel='create new' ref={blogFormRef}>
-                <NewBlogForm createBlog={addBlog} />
-              </Togglable>
-              <BlogList />
-            </div>
-          } />
-          <Route path="/users/:id" element={<User user={user} />} />
-          <Route path="/users" element={<UsersList />} />
-        </Routes>
-
-        <br />
-      </div>
+          <br />
+        </div>
+      }
+    </Container>
   )
 }
 

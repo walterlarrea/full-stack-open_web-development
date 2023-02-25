@@ -1,6 +1,18 @@
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
+import {
+  Table,
+  TableHead,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  ListItemButton,
+  ListItemText,
+  Paper
+} from '@mui/material'
+
 const Users = () => {
   const usersList = useSelector(({ user }) => user.usersList)
 
@@ -8,23 +20,31 @@ const Users = () => {
     <>
       <h2>Users</h2>
 
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>blogs created</th>
-          </tr>
-        </thead>
-        <tbody>
-
-          {usersList.map(user =>
-            <tr key={user.id} >
-              <th><Link to={`/users/${user.id}`}> {user.name} </Link></th>
-              <th>{user.blogs.length} </th>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell></TableCell>
+              <TableCell>blogs created</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {usersList.map(user =>
+              <TableRow key={user.id} >
+                <TableCell>
+                  <ListItemButton component={Link} to={`/users/${user.id}`} >
+                    <ListItemText >{user.name}</ListItemText>
+                    {user.name}
+                  </ListItemButton>
+                </TableCell>
+                <TableCell>
+                  {user.blogs.length}
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   )
 }

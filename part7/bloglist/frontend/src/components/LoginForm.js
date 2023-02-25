@@ -3,9 +3,21 @@ import { useDispatch } from 'react-redux'
 import { login } from '../reducers/userReducer'
 import { setNotification } from '../reducers/notificationReducer'
 
+import {
+  TextField,
+  Button
+} from '@mui/material'
+
 const LoginForm = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+
+  const centerGridStyle = {
+    display: 'grid',
+    gridGap: '20px',
+    gridTemplateColumns: '1fr',
+    justifyItems: 'center'
+  }
 
   const dispatch = useDispatch()
 
@@ -26,13 +38,13 @@ const LoginForm = () => {
   }
 
   return (
-    <div>
+    <div style={centerGridStyle} >
       <h2>Log in to application</h2>
-      <form onSubmit={handleLogin}>
+
+      <form style={centerGridStyle} onSubmit={handleLogin}>
         <div>
-          username
-          <input
-            id='username'
+          <TextField
+            label='username'
             type="text"
             value={username}
             name="username"
@@ -40,18 +52,19 @@ const LoginForm = () => {
           />
         </div>
         <div>
-          password
-          <input
-            id='password'
+          <TextField
+            label='password'
             type="password"
             value={password}
             name="password"
             onChange={handlePasswordChange}
           />
         </div>
-        <button id='login-button' type="submit">login</button>
+        <Button variant='contained' color='primary' id='login-button' type="submit">
+          login
+        </Button>
       </form>
-    </div>
+    </div >
   )
 }
 

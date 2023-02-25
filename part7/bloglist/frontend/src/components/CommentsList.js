@@ -8,6 +8,15 @@ import Togglable from './Togglable'
 import commentService from '../services/comments'
 import { setNotification } from '../reducers/notificationReducer'
 
+import {
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Divider
+} from '@mui/material'
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord'
+
 const CommentsList = ({ blog }) => {
 
   const commentFormRef = useRef()
@@ -32,13 +41,20 @@ const CommentsList = ({ blog }) => {
       <Togglable buttonLabel='add comment' ref={commentFormRef}>
         <NewCommentForm blog={blog} createComment={addComment} />
       </Togglable>
-      <ul>
+
+      <List>
         {blog.comments.map(comment =>
-          <li key={comment.id}>
-            {comment.content}
-          </li>
+          <div key={comment.id}>
+            <ListItem>
+              <ListItemIcon>
+                <FiberManualRecordIcon />
+              </ListItemIcon>
+              <ListItemText>{comment.content}</ListItemText>
+            </ListItem>
+            <Divider />
+          </div>
         )}
-      </ul>
+      </List>
     </div>
   )
 }

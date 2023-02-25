@@ -3,8 +3,12 @@ import { useNavigate } from 'react-router-dom'
 
 import { deleteBlog, likeBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
-
 import CommentsList from './CommentsList'
+
+import {
+  Button,
+  Link
+} from '@mui/material'
 
 const Blog = ({ blog }) => {
   const paragraphStyle = {
@@ -42,16 +46,16 @@ const Blog = ({ blog }) => {
         {blog.title} {blog.author}
       </h2>
       <br />
-      <a style={paragraphStyle} href={blog.url}>{blog.url}</a>
+      <Link href={blog.url}>{blog.url}</Link>
       <p style={paragraphStyle}>
         {blog.likes} likes
-        <button onClick={handleBlogLike}>like</button>
+        <Button variant='outlined' onClick={handleBlogLike}>like</Button>
       </p>
       <p style={paragraphStyle}>added by {blog.user?.name}</p>
       <br />
 
       {currentUser.username === blog.user?.username ?
-        <button onClick={handleBlogRemove}>remove</button>
+        <Button variant='outlined' color='error' onClick={handleBlogRemove}>remove</Button>
         :
         ''
       }

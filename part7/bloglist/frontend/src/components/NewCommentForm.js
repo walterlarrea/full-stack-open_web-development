@@ -1,5 +1,10 @@
 import { useState } from 'react'
 
+import {
+  TextField,
+  Button
+} from '@mui/material'
+
 const NewCommentForm = ({ blog, createComment }) => {
   const [newComment, setNewComment] = useState('')
 
@@ -22,15 +27,15 @@ const NewCommentForm = ({ blog, createComment }) => {
       <h2>new comment</h2>
       <form className='submitForm' onSubmit={addComment}>
         <div>
-          <input
-            id='new-comment-content'
+          <TextField
+            label='comment'
             type='text'
             value={newComment}
             name='content'
             onChange={handleCommentChange}
           />
         </div>
-        <button type='submit'>comment</button>
+        <Button variant='contained' type='submit'>comment</Button>
       </form>
     </div>
   )

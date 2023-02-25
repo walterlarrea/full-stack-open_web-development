@@ -5,6 +5,8 @@ import { Provider } from 'react-redux'
 import App from './App'
 import store from './store'
 
+import '@fontsource/roboto'
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <Router>

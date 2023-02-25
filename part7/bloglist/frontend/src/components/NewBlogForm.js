@@ -1,9 +1,21 @@
 import { useState } from 'react'
 
+import {
+  TextField,
+  Button
+} from '@mui/material'
+
 const NewBlogForm = ({ createBlog }) => {
   const [newTitle, setNewTitle] = useState('')
   const [newAuthor, setNewAuthor] = useState('')
   const [newUrl, setNewUrl] = useState('')
+
+  const startGridStyle = {
+    display: 'grid',
+    gridGap: '20px',
+    gridTemplateColumns: '1fr',
+    justifyItems: 'start'
+  }
 
   const handleTitleChange = (event) => {
     setNewTitle(event.target.value)
@@ -32,11 +44,10 @@ const NewBlogForm = ({ createBlog }) => {
   return (
     <div>
       <h2>create new</h2>
-      <form className='submitForm' onSubmit={addBlog}>
+      <form style={startGridStyle} className='submitForm' onSubmit={addBlog}>
         <div>
-          title:
-          <input
-            id='new-blog-title'
+          <TextField
+            label='title'
             type='text'
             value={newTitle}
             name='title'
@@ -44,9 +55,8 @@ const NewBlogForm = ({ createBlog }) => {
           />
         </div>
         <div>
-          author:
-          <input
-            id='new-blog-author'
+          <TextField
+            label='author'
             type='text'
             value={newAuthor}
             name='author'
@@ -54,18 +64,17 @@ const NewBlogForm = ({ createBlog }) => {
           />
         </div>
         <div>
-          url:
-          <input
-            id='new-blog-url'
+          <TextField
+            label='url'
             type='text'
             value={newUrl}
             name='url'
             onChange={handleUrlChange}
           />
         </div>
-        <button type='submit'>create</button>
+        <Button style={{ marginBottom: 20 }} variant='contained' type='submit'>create</Button>
       </form>
-    </div>
+    </div >
   )
 }
 
