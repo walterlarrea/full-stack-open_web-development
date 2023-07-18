@@ -11,14 +11,14 @@ import {
 } from '@mui/material'
 
 const Blog = ({ blog }) => {
-  const paragraphStyle = {
-    margin: 2,
-  }
-
   const currentUser = useSelector(({ user }) => user.currentUser)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  const paragraphStyle = {
+    margin: 2,
+  }
 
   const handleBlogLike = () => {
     dispatch(likeBlog(blog))
@@ -51,13 +51,11 @@ const Blog = ({ blog }) => {
         {blog.likes} likes
         <Button variant='outlined' onClick={handleBlogLike}>like</Button>
       </p>
-      <p style={paragraphStyle}>added by {blog.user?.name}</p>
+      <p style={paragraphStyle}>added by {blog.user.name}</p>
       <br />
 
-      {currentUser.username === blog.user?.username ?
+      {currentUser.username === blog.user.username &&
         <Button variant='outlined' color='error' onClick={handleBlogRemove}>remove</Button>
-        :
-        ''
       }
       <br />
       <CommentsList blog={blog} />

@@ -72,6 +72,7 @@ const App = () => {
 
           <Routes>
             <Route path="/blogs/:id" element={<Blog blog={blog} />} />
+
             <Route path="/" element={
               <div>
                 <Togglable buttonLabel='create new' ref={blogFormRef}>
@@ -80,7 +81,9 @@ const App = () => {
                 <BlogList />
               </div>
             } />
+
             <Route path="/users/:id" element={<User user={user} />} />
+
             <Route path="/users" element={<UsersList />} />
           </Routes>
 
